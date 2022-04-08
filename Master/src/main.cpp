@@ -38,7 +38,7 @@ int startNextSequence = 0;
 void setup()
 {
   Serial.begin(9600);
-  PORTD |= 0b00011100; // Set pin 2, 3, 4 output
+  DDRD |= 0b00011100; // Set pin 2, 3, 4 output
   timeOutTimer = millis();
   timer = millis();
   delay(1000);
@@ -50,8 +50,8 @@ void setup()
 void changeLight(int myDelay, int mask)
 {
   startNextSequence = 0;
-  DDRD &= 0;                            //set all the LEDs to low
-  DDRD |= mask;                         //apply the supplied mask for the specified LED
+  PORTD &= 0;                            //set all the LEDs to low
+  PORTD |= mask;                         //apply the supplied mask for the specified LED
   while (millis() - timer < myDelay) {
     //stay here until the delay has finished
   }
@@ -64,7 +64,7 @@ void changeLight(int myDelay, int mask)
 void yellowBlinkingTimeOut() {
   if (millis() - timeOutTimer > TIME_OUT)
   {
-    DDRD &= 0;  //set all the LEDs to LOW
+    PORTD &= 0;  //set all the LEDs to LOW
     int state = 0; 
     while (true)
     {
@@ -73,13 +73,13 @@ void yellowBlinkingTimeOut() {
       {
         if (state == 0)
         {
-          DDRD |= yellowMask; //on
+          PORTD |= yellowMask; //on
           state = 1;
         }
         else
         {
           state = 0;
-          DDRD &= 0;   //off
+          PORTD &= 0;   //off
         }
         blinkingYellowTimer = millis();
       }
@@ -119,7 +119,6 @@ void loop()
           yellowBlinkingTimeOut();  //function monitoring for timeout
         }
       }
-      //DDRD &= 0;
       counter = 0;
       receive = ""; //clear the buffer for next message
       changeLight(RED_TIME, redMask); //call the change lights function
@@ -148,7 +147,6 @@ void loop()
           yellowBlinkingTimeOut();  //function monitoring for timeoiuts
         }
       }
-      //DDRD &= 0;  //set all LEDs to low
       counter = 0;
       receive = "";  //clear the buffer for the next stage
       changeLight(YELLOW_TIME - 1800, yellowMask);     //change light
@@ -160,7 +158,6 @@ void loop()
       {
         timer = millis();
       }
-      //delay(1700);
       if(counter == 0){
         Serial.print("RED"); //send green to slave 
         ++counter; 
@@ -178,7 +175,7 @@ void loop()
           yellowBlinkingTimeOut();    //function to monitor for timeout
         }
       }
-      DDRD &= 0;      //set all LEDs to low
+      PORTD &= 0;      //set all LEDs to low
       receive = "";  //clear the buffer
       counter = 0;
       changeLight(GREEN_TIME, greenMask);
@@ -208,7 +205,6 @@ void loop()
           yellowBlinkingTimeOut();
         }
       }
-      //DDRD &= 0;  //ste LEDs to low
       receive = "";   //clear the buffer
       counter = 0;
       changeLight(YELLOW_TIME, yellowMask);

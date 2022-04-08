@@ -29,7 +29,7 @@ int counter = 0;
 void yellowBlinkingTimeOut() {
   if (millis() - timeOutTimer > TIME_OUT)
   {
-    DDRD &= 0;  //set all the LEDs to LOW
+    PORTD &= 0;  //set all the LEDs to LOW
     int state = 0; 
     while (true)
     {
@@ -38,13 +38,13 @@ void yellowBlinkingTimeOut() {
       {
         if (state == 0)
         {
-          DDRD |= yellowMask; //on
+          PORTD |= yellowMask; //on
           state = 1;
         }
         else
         {
           state = 0;
-          DDRD &= 0;   //off
+          PORTD &= 0;   //off
         }
         blinkingYellowTimer = millis();
       }
@@ -55,7 +55,7 @@ void yellowBlinkingTimeOut() {
 
 void setup(){
   Serial.begin(9600);
-  PORTD |= 0b00011100;
+  DDRD |= 0b00011100;
   timeOutTimer = millis();
   delay(1000);
 }
@@ -66,27 +66,27 @@ void loop(){
     if(receive.equals("RED")){
       Serial.print("ACK");
       delay(500);
-      DDRD &= 0;
-      DDRD |= redMask;
+      PORTD &= 0;
+      PORTD |= redMask;
       receive = "";
     }
     if(receive.equals("YELLOW")){
       Serial.print("ACK");
       delay(1800);
-      DDRD &= 0;
-      DDRD |= yellowMask;
+      PORTD &= 0;
+      PORTD |= yellowMask;
       receive = "";
     }
     if(receive.equals("GREEN")){
       Serial.print("ACK");
-      DDRD &= 0;
-      DDRD |= greenMask;
+      PORTD &= 0;
+      PORTD |= greenMask;
       receive = "";
     }
     if(receive.equals("LONG")){
       Serial.print("ACK");
-      DDRD &= 0;
-      DDRD |= yellowMask;
+      PORTD &= 0;
+      PORTD |= yellowMask;
       receive = "";
     }
     timeOutTimer = millis();
