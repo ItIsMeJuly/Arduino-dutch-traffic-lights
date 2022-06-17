@@ -131,7 +131,7 @@ void loop()
         timer = millis();
       }
       if(counter == 0){
-        Serial.print("LONG"); //send green to slave 
+        Serial.print("LONG_YELLOW"); //send green to slave 
         ++counter; 
       }
       if (receive != "ACK")      //if the buffer is different than ACK
